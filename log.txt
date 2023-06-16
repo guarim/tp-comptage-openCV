@@ -1,0 +1,8 @@
+ID: 1 Detection d entrée date et heure Fri Jun 16 17:21:13 2023
+ID: 2 Detection d entrée date et heure Fri Jun 16 17:21:18 2023
+ID: 3 Detection de sortie date et heure Fri Jun 16 17:21:21 2023
+ID: 4 Detection d entrée date et heure Fri Jun 16 17:21:23 2023
+ID: 5 Detection de sortie date et heure Fri Jun 16 17:21:24 2023
+ID: 7 Detection de sortie date et heure Fri Jun 16 17:21:25 2023
+ID: 10 Detection d entrée date et heure Fri Jun 16 17:21:29 2023
+ID: 12 Detection d entrée date et heure Fri Jun 16 17:21:29 2023
