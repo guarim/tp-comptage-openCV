@@ -22,7 +22,7 @@ cap = cv.VideoCapture('TestVideo.avi')
 ##rawCapture = PiRGBArray(camera, size=(160,120))
 ##time.sleep(0.1)
 
-#Propiedades del video
+
 ##cap.set(3,160) #Width
 ##cap.set(4,120) #Height
 
