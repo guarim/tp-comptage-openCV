@@ -9,11 +9,11 @@ try:
 except:
     print( "Pas d'archive")
 
-#Contadores de entrada y salida
+
 cnt_up   = 0
 cnt_down = 0
 
-#Fuente de video
+
 #cap = cv.VideoCapture(0)
 cap = cv.VideoCapture('TestVideo.avi')
 #camera = PiCamera()
@@ -26,7 +26,7 @@ cap = cv.VideoCapture('TestVideo.avi')
 ##cap.set(3,160) #Width
 ##cap.set(4,120) #Height
 
-#Imprime las propiedades de captura a consola
+#Imprime
 for i in range(19):
     print( i, cap.get(i))
 
@@ -36,7 +36,7 @@ frameArea = h*w
 areaTH = frameArea/250
 print( 'Area Threshold', areaTH)
 
-#Lineas de entrada/salida
+#Lignes de détections
 line_up = int(1.1*(h/3))
 up_limit =   int(1*(h/3))
 
@@ -65,10 +65,10 @@ pt8 =  [w, down_limit];
 pts_L4 = np.array([pt7,pt8], np.int32)
 pts_L4 = pts_L4.reshape((-1,1,2))
 
-#Substractor de fondo
+#Soustraire le fond
 fgbg = cv.createBackgroundSubtractorMOG2(detectShadows = True)
 
-#Elementos estructurantes para filtros morfoogicos
+#filtres
 kernelOp = np.ones((3,3),np.uint8)
 kernelOp2 = np.ones((5,5),np.uint8)
 kernelCl = np.ones((11,11),np.uint8)
@@ -81,21 +81,21 @@ pid = 1
 zone_comptx = [0, 640]
 while(cap.isOpened()):
 ##for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-    #Lee una imagen de la fuente de video
+    
     ret, frame = cap.read()
 ##    frame = image.array
 
     for i in persons:
-        i.age_one() #age every person one frame
+        i.age_one() 
     #########################
-    #   PRE-PROCESAMIENTO   #
+    #   PRE-PROCES#
     #########################
     
-    #Aplica substraccion de fondo
+    #appliquer suppression du fond
     fgmask = fgbg.apply(frame)
     fgmask2 = fgbg.apply(frame)
 
-    #Binariazcion para eliminar sombras (color gris)
+    #Binariser gris
     try:
         ret,imBin= cv.threshold(fgmask,200,255,cv.THRESH_BINARY)
         ret,imBin2 = cv.threshold(fgmask2,200,255,cv.THRESH_BINARY)
@@ -111,7 +111,7 @@ while(cap.isOpened()):
         print ('DOWN:',cnt_down)
         break
     #################
-    #   CONTORNOS   #
+    #   Contours #
     #################
     
     # RETR_EXTERNAL returns only extreme outer flags. All child contours are left behind.
@@ -123,7 +123,7 @@ while(cap.isOpened()):
             #   TRACKING    #
             #################
             
-            #Falta agregar condiciones para multipersonas, salidas y entradas de pantalla.
+            
             
             M = cv.moments(cnt)
             cx = int(M['m10']/M['m00'])
@@ -134,7 +134,7 @@ while(cap.isOpened()):
             if cy in range(up_limit,down_limit):
                 for i in persons:
                     if abs(x-i.getX()) < w and abs(y-i.getY()) < h :
-                        # el objeto esta cerca de uno que ya se detecto antes
+                        
                         new = False
                         i.updateCoords(cx,cy)   #actualiza coordenadas en el objeto and resets age
                         if i.going_UP(line_down,line_up) == True:
@@ -152,16 +152,16 @@ while(cap.isOpened()):
                         elif i.getDir() == 'up' and i.getY() < up_limit:
                             i.setDone()
                     if i.timedOut():
-                        #sacar i de la lista persons
+                        
                         index = persons.index(i)
                         persons.pop(index)
-                        del i     #liberar la memoria de i
+                        del i    # effacer registre i
                 if new == True:
                     p = Person.MyPerson(pid,cx,cy, max_p_age)
                     persons.append(p)
                     pid += 1     
             #################
-            #   DIBUJOS     #
+            #   #
             #################
             cv.circle(frame,(cx,cy), 5, (0,0,255), -1)
             img = cv.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
@@ -171,7 +171,7 @@ while(cap.isOpened()):
     #END for cnt in contours0
             
     #########################
-    # DIBUJAR TRAYECTORIAS  #
+    # D#
     #########################
     for i in persons:
 ##        if len(i.getTracks()) >= 2:
@@ -184,7 +184,7 @@ while(cap.isOpened()):
         cv.putText(frame, str(i.getId()),(i.getX(),i.getY()),font,0.3,i.getRGB(),1,cv.LINE_AA)
         
     #################
-    #   IMAGANES    #
+    # Affichages #
     #################
     str_up = 'SORTIES:   '+ str(cnt_up)
     str_down = 'ENTREES:  '+ str(cnt_down)
@@ -205,14 +205,14 @@ while(cap.isOpened()):
     
 
 ##    rawCapture.truncate(0)
-    #preisonar ESC para salir
+    
     k = cv.waitKey(30) & 0xff
     if k == 27:
         break
 #END while(cap.isOpened())
     
 #################
-#   LIMPIEZA    #
+#   exit #
 #################
 log.flush()
 log.close()
